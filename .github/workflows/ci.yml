@@ -72,7 +72,7 @@ jobs:
           files += list(root.rglob("*.yaml"))
 
           for file in files:
-              if ".git" in file.parts:
+              if ".git" in file.parts or ".venv" in file.parts:
                   continue
 
               print(f"Validating: {file}")

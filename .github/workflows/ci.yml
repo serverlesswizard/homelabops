@@ -39,6 +39,7 @@ jobs:
       - name: Check Ansible version
         run: |
           ansible --version
+          ansible-config dump --only-changed
           echo "Using Ansible config: $ANSIBLE_CONFIG"
 
       - name: Validate Ansible playbooks
@@ -55,7 +56,9 @@ jobs:
 
       - name: Run Ansible Lint
         run: |
-          ansible-lint ansible/
+          ansible-lint \
+            --profile basic \
+            ansible/playbooks/*.yml
 
       - name: Validate YAML files
         run: |

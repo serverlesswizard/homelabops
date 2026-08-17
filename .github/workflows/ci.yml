@@ -40,6 +40,8 @@ jobs:
         run: |
           set -e
 
+          export ANSIBLE_CONFIG="${GITHUB_WORKSPACE}/ansible/ansible.cfg"
+
           for playbook in ansible/playbooks/*.yml; do
             echo "========================================"
             echo "Checking: $playbook"

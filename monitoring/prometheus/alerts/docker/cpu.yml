@@ -1,0 +1,16 @@
+groups:
+  - name: docker-cpu
+    rules:
+
+      - alert: ContainerHighCPU
+        expr: |
+          sum by (name) (
+            rate(container_cpu_usage_seconds_total{name!=""}[2m])
+          ) * 100 > 90
+        for: 2m
+        labels:
+          severity: warning
+          category: docker
+        annotations:
+          summary: "High CPU usage - {{ $labels.name }}"
+          description: "Container '{{ $labels.name }}' CPU usage has exceeded 90% for more than 2 minutes."

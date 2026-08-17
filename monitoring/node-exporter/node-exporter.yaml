@@ -1,0 +1,31 @@
+services:
+  node-exporter:
+    image: prom/node-exporter:latest
+    container_name: node-exporter
+
+    restart: unless-stopped
+
+    mem_limit: 64m
+    cpus: "0.25"
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    network_mode: host
+    pid: host
+
+    volumes:
+      - /:/host:ro,rslave
+
+    command:
+      - '--path.rootfs=/host'
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9100/metrics"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s

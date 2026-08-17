@@ -1,0 +1,15 @@
+groups:
+  - name: docker-health
+    rules:
+
+      - alert: ContainerUnhealthy
+        expr: docker_container_health{container!="docker-exporter"} == 0
+        for: 2m
+
+        labels:
+          severity: critical
+          category: docker
+
+        annotations:
+          summary: "Container Unhealthy - {{ $labels.container }}"
+          description: "Docker container '{{ $labels.container }}' has been unhealthy for more than 2 minutes."

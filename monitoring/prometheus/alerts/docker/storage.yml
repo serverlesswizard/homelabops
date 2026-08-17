@@ -1,0 +1,17 @@
+groups:
+  - name: docker-storage
+    rules:
+      - alert: DockerDiskUsageHigh
+        expr: |
+          (
+            node_filesystem_avail_bytes{mountpoint="/var/lib/docker"}
+            /
+            node_filesystem_size_bytes{mountpoint="/var/lib/docker"}
+          ) < 0.15
+        for: 10m
+        labels:
+          severity: warning
+          category: docker
+        annotations:
+          summary: "Docker storage almost full"
+          description: "/var/lib/docker has less than 15% free space."

@@ -1,0 +1,59 @@
+groups:
+  - name: node-disk
+    rules:
+
+      - alert: HighDiskUsage
+        expr: |
+          (
+            (
+              node_filesystem_size_bytes{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs",
+                mountpoint="/"
+              }
+              -
+              node_filesystem_avail_bytes{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs",
+                mountpoint="/"
+              }
+            )
+            /
+            node_filesystem_size_bytes{
+              fstype!~"tmpfs|devtmpfs|overlay|squashfs",
+              mountpoint="/"
+            }
+          ) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "High disk usage on {{ $labels.job }}"
+          description: "Root filesystem usage has been above 80% for more than 10 minutes. Current usage: {{ printf \"%.2f\" $value }}%."
+
+      - alert: CriticalDiskUsage
+        expr: |
+          (
+            (
+              node_filesystem_size_bytes{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs",
+                mountpoint="/"
+              }
+              -
+              node_filesystem_avail_bytes{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs",
+                mountpoint="/"
+              }
+            )
+            /
+            node_filesystem_size_bytes{
+              fstype!~"tmpfs|devtmpfs|overlay|squashfs",
+              mountpoint="/"
+            }
+          ) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Critical disk usage on {{ $labels.job }}"
+          description: "Root filesystem usage has been above 90% for more than 5 minutes. Current usage: {{ printf \"%.2f\" $value }}%."

@@ -1,0 +1,13 @@
+groups:
+  - name: docker-restart
+    rules:
+
+      - alert: ContainerRestartingFrequently
+        expr: increase(docker_container_restarts_total[10m]) >= 3
+        for: 2m
+        labels:
+          severity: warning
+          category: docker
+        annotations:
+          summary: "Container {{ $labels.container }} is restarting frequently"
+          description: "Container '{{ $labels.container }}' restarted {{ $value }} times in the last 10 minutes."

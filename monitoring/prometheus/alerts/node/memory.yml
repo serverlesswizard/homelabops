@@ -1,0 +1,41 @@
+groups:
+  - name: node-memory
+    rules:
+
+      - alert: HighMemoryUsage
+        expr: |
+          (
+            (
+              node_memory_MemTotal_bytes
+              -
+              node_memory_MemAvailable_bytes
+            )
+            /
+            node_memory_MemTotal_bytes
+          ) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "High memory usage on {{ $labels.job }}"
+          description: "Memory usage has been above 80% for more than 10 minutes. Current usage: {{ printf \"%.2f\" $value }}%."
+
+      - alert: CriticalMemoryUsage
+        expr: |
+          (
+            (
+              node_memory_MemTotal_bytes
+              -
+              node_memory_MemAvailable_bytes
+            )
+            /
+            node_memory_MemTotal_bytes
+          ) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Critical memory usage on {{ $labels.job }}"
+          description: "Memory usage has been above 90% for more than 5 minutes. Current usage: {{ printf \"%.2f\" $value }}%."

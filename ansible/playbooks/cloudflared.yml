@@ -1,0 +1,7 @@
+---
+- name: Deploy Cloudflared
+  hosts: workers
+  become: true
+
+  roles:
+    - cloudflared

@@ -1,0 +1,6 @@
+---
+- import_playbook: bootstrap.yml
+- import_playbook: docker.yml
+- import_playbook: monitoring.yml
+- import_playbook: uptime-kuma.yml
+- import_playbook: cloudflared.yml

@@ -1,0 +1,13 @@
+groups:
+  - name: node-availability
+    rules:
+
+      - alert: NodeDown
+        expr: up{job=~"ryzen-homelab|pentium-nas"} == 0
+        for: 2m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Node {{ $labels.job }} is down"
+          description: "The node {{ $labels.instance }} has been unreachable for more than 2 minutes."

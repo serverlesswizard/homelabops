@@ -1,0 +1,7 @@
+---
+- name: Bootstrap Homelab Servers
+  hosts: homelab
+  become: true
+
+  roles:
+    - common

@@ -1,0 +1,39 @@
+services:
+  docker-health-exporter:
+    image: fviolence/docker-health-exporter:latest
+    container_name: docker-exporter
+
+    restart: unless-stopped
+
+    mem_limit: 64m
+    cpus: "0.25"
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+    environment:
+      - PORT=9066
+      - SCRAPE_INTERVAL=10
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+
+    ports:
+      - "9066:9066"
+
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9066/metrics"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+
+    networks:
+      - monitoring
+
+networks:
+  monitoring:
+    external: true

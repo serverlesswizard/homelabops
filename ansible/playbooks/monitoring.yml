@@ -1,0 +1,12 @@
+---
+- name: Deploy Monitoring Stack
+  hosts: workers
+  become: true
+
+  roles:
+    - prometheus
+    - grafana
+    - alertmanager
+    - node-exporter
+    - cadvisor
+    - docker-health-exporter

@@ -1,0 +1,33 @@
+groups:
+  - name: node-cpu
+    rules:
+
+      - alert: HighCPUUsage
+        expr: |
+          (100 - (
+            avg by(instance, job) (
+              rate(node_cpu_seconds_total{mode="idle"}[5m])
+            ) * 100
+          )) > 85
+        for: 10m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "High CPU usage on {{ $labels.job }}"
+          description: "CPU usage has been above 85% for more than 10 minutes. Current usage: {{ printf \"%.2f\" $value }}%."
+
+      - alert: CriticalCPUUsage
+        expr: |
+          (100 - (
+            avg by(instance, job) (
+              rate(node_cpu_seconds_total{mode="idle"}[5m])
+            ) * 100
+          )) > 95
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Critical CPU usage on {{ $labels.job }}"
+          description: "CPU usage has been above 95% for more than 5 minutes. Current usage: {{ printf \"%.2f\" $value }}%."

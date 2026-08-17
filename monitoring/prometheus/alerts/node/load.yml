@@ -1,0 +1,33 @@
+groups:
+  - name: node-load
+    rules:
+
+      - alert: HighSystemLoad
+        expr: |
+          node_load15
+          /
+          count by(instance, job) (
+            node_cpu_seconds_total{mode="idle"}
+          ) > 1
+        for: 10m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "High system load on {{ $labels.job }}"
+          description: "15-minute load average has exceeded the number of CPU cores for more than 10 minutes. Current load ratio: {{ printf \"%.2f\" $value }}."
+
+      - alert: CriticalSystemLoad
+        expr: |
+          node_load15
+          /
+          count by(instance, job) (
+            node_cpu_seconds_total{mode="idle"}
+          ) > 2
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Critical system load on {{ $labels.job }}"
+          description: "15-minute load average has exceeded twice the number of CPU cores for more than 5 minutes. Current load ratio: {{ printf \"%.2f\" $value }}."

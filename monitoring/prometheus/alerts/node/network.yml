@@ -1,0 +1,46 @@
+groups:
+  - name: node-network
+    rules:
+
+      - alert: NetworkInterfaceDown
+        expr: |
+          (
+            node_network_up{job="ryzen-homelab", device="eno1"} == 0
+          )
+          or
+          (
+            node_network_up{job="pentium-nas", device="enp2s0"} == 0
+          )
+        for: 5m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "Primary network interface down on {{ $labels.job }}"
+          description: "Primary network interface {{ $labels.device }} has been down for more than 5 minutes."
+
+      - alert: HighNetworkReceiveErrors
+        expr: |
+          rate(node_network_receive_errs_total{job="ryzen-homelab", device="eno1"}[5m]) > 0
+          or
+          rate(node_network_receive_errs_total{job="pentium-nas", device="enp2s0"}[5m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "Receive errors detected on {{ $labels.job }}"
+          description: "Primary network interface {{ $labels.device }} is reporting receive errors."
+
+      - alert: HighNetworkTransmitErrors
+        expr: |
+          rate(node_network_transmit_errs_total{job="ryzen-homelab", device="eno1"}[5m]) > 0
+          or
+          rate(node_network_transmit_errs_total{job="pentium-nas", device="enp2s0"}[5m]) > 0
+        for: 5m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "Transmit errors detected on {{ $labels.job }}"
+          description: "Primary network interface {{ $labels.device }} is reporting transmit errors."

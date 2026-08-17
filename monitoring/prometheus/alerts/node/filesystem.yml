@@ -1,0 +1,66 @@
+groups:
+  - name: node-filesystem
+    rules:
+
+      - alert: FilesystemReadOnly
+        expr: |
+          node_filesystem_readonly{
+            fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+          } == 1
+        for: 1m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Filesystem is read-only on {{ $labels.job }}"
+          description: "Filesystem {{ $labels.mountpoint }} on {{ $labels.instance }} has become read-only."
+
+      - alert: HighDiskInodeUsage
+        expr: |
+          (
+            (
+              node_filesystem_files{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+              }
+              -
+              node_filesystem_files_free{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+              }
+            )
+            /
+            node_filesystem_files{
+              fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+            }
+          ) * 100 > 80
+        for: 10m
+        labels:
+          severity: warning
+          category: infrastructure
+        annotations:
+          summary: "High inode usage on {{ $labels.job }}"
+          description: "Inode usage on {{ $labels.mountpoint }} is above 80%. Current usage: {{ printf \"%.2f\" $value }}%."
+
+      - alert: CriticalDiskInodeUsage
+        expr: |
+          (
+            (
+              node_filesystem_files{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+              }
+              -
+              node_filesystem_files_free{
+                fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+              }
+            )
+            /
+            node_filesystem_files{
+              fstype!~"tmpfs|devtmpfs|overlay|squashfs"
+            }
+          ) * 100 > 90
+        for: 5m
+        labels:
+          severity: critical
+          category: infrastructure
+        annotations:
+          summary: "Critical inode usage on {{ $labels.job }}"
+          description: "Inode usage on {{ $labels.mountpoint }} is above 90%. Current usage: {{ printf \"%.2f\" $value }}%."

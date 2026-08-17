@@ -1,0 +1,13 @@
+groups:
+  - name: docker-memory
+    rules:
+
+      - alert: ContainerHighMemory
+        expr: (container_memory_usage_bytes{name!=""} / container_spec_memory_limit_bytes{name!=""} * 100) > 85
+        for: 5m
+        labels:
+          severity: warning
+          category: docker
+        annotations:
+          summary: "High Memory usage - {{ $labels.name }}"
+          description: "Container '{{ $labels.name }}' memory usage exceeded 85%."

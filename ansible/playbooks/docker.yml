@@ -5,4 +5,4 @@
 
   roles:
     - docker
-    - docker-network
+    - docker_network

@@ -1,6 +1,15 @@
 ---
-- import_playbook: bootstrap.yml
-- import_playbook: docker.yml
-- import_playbook: monitoring.yml
-- import_playbook: uptime-kuma.yml
-- import_playbook: cloudflared.yml
+- name: Bootstrap infrastructure
+  import_playbook: bootstrap.yml
+
+- name: Configure Docker
+  import_playbook: docker.yml
+
+- name: Configure monitoring
+  import_playbook: monitoring.yml
+
+- name: Deploy Uptime Kuma
+  import_playbook: uptime-kuma.yml
+
+- name: Configure Cloudflare Tunnel
+  import_playbook: cloudflared.yml

@@ -1,5 +1,6 @@
 ---
-- hosts: localhost
+- name: Test cadvisor
+  hosts: localhost
   remote_user: root
   roles:
-    - roles/cadvisor
+    - cadvisor

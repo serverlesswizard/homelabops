@@ -5,7 +5,7 @@
 
   tasks:
     - name: Create uptime-kuma directory
-      file:
+      ansible.builtin.file:
         path: /home/pentium-nas/uptime-kuma
         state: directory
         owner: pentium-nas
@@ -13,7 +13,7 @@
         mode: '0755'
 
     - name: Copy compose file
-      copy:
+      ansible.builtin.copy:
         src: ../monitoring/uptime-kuma/compose.yaml
         dest: /home/pentium-nas/uptime-kuma/compose.yaml
         owner: pentium-nas
@@ -21,7 +21,7 @@
         mode: '0644'
 
     - name: Create data directory
-      file:
+      ansible.builtin.file:
         path: /home/pentium-nas/uptime-kuma/data
         state: directory
         owner: pentium-nas

@@ -1,0 +1,6 @@
+---
+- name: Test uptime_kuma
+  hosts: localhost
+  remote_user: root
+  roles:
+    - uptime_kuma

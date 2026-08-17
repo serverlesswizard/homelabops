@@ -4,4 +4,4 @@
   become: true
 
   roles:
-    - uptime-kuma
+    - uptime_kuma

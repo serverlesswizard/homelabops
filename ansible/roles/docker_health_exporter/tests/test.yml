@@ -1,0 +1,6 @@
+---
+- name: Test docker_health_exporter
+  hosts: localhost
+  remote_user: root
+  roles:
+    - docker_health_exporter

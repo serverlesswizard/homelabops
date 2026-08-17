@@ -7,6 +7,6 @@
     - prometheus
     - grafana
     - alertmanager
-    - node-exporter
+    - node_exporter
     - cadvisor
-    - docker-health-exporter
+    - docker_health_exporter

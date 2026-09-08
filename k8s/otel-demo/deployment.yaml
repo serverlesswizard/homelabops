@@ -22,7 +22,7 @@ spec:
 
       containers:
         - name: otel-demo
-          image: ghcr.io/serverlesswizard/otel-demo:1.0.0
+          image: ghcr.io/serverlesswizard/otel-demo:1.1.0
 
           ports:
             - containerPort: 5000

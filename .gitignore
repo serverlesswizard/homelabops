@@ -51,3 +51,4 @@ Thumbs.db
 #Alertmamger
 #-------------------------------------------------------------
 monitoring/alertmanager/alertmanager.yml
+.venv/

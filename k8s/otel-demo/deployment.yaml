@@ -16,6 +16,10 @@ spec:
         app: otel-demo
 
     spec:
+
+      imagePullSecrets:
+        - name: ghcr-secret
+
       containers:
         - name: otel-demo
           image: ghcr.io/serverlesswizard/otel-demo:1.0.0

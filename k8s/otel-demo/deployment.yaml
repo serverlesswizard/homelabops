@@ -4,7 +4,7 @@ metadata:
   name: otel-demo
   namespace: otel-demo
 spec:
-  replicas: 1
+  replicas: 2
 
   selector:
     matchLabels:

@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: otel-demo
+  namespace: otel-demo
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: otel-demo
+
+  template:
+    metadata:
+      labels:
+        app: otel-demo
+
+    spec:
+      containers:
+        - name: otel-demo
+          image: ghcr.io/serverlesswizard/otel-demo:1.0.0
+
+          ports:
+            - containerPort: 5000
+
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 5000
+            initialDelaySeconds: 10
+            periodSeconds: 20
